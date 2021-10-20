@@ -121,7 +121,7 @@ module.exports = gql`
     code: Int!
     success: Boolean!
     message: String
-    topicsOfEvent: TopicsOfEvent
+    topicsOfEvent: [TopicsOfEvent]
     errors: [String]
   }
 
@@ -136,7 +136,7 @@ module.exports = gql`
   input ComfirmInput {
     topic: ID!
     sinhvien: ID!
-    giaovien: ID!
+    gianvien: ID!
   }
 
   type ComfirmSvTopicGvMutationResponse {
@@ -149,7 +149,7 @@ module.exports = gql`
   # ROOT API
   type Query {
     hello: String
-    userByTypeUser(userType: Int): UserQueryResponse
+    userByTypeUser(userType: Int!): UserQueryResponse
     userInfoes: [UserInfo]
     topics: [Topic]
     checkScheduleEvent: ScheduleEventQueryResponse
@@ -163,7 +163,7 @@ module.exports = gql`
     createUserInfo(name: String!, avatar: String, email: String!, phone: String!, identification: String): UserInfoMutationResponse
     createUser(username: String!, password: String!, userType: Int!, info: ID!): UserMutationResponse
     createTopic(title: String!, content: String!, topicType: [String], creator: ID!): TopicMutationResponse
-    createScheduleEvent(timeStart: String!, timeEnd: String, topics: [String!]!, numberOfTopics: Int!): ScheduleEventMutationResponse
+    createScheduleEvent(timeStart: String!, timeEnd: String!, topics: [String!]!, numberOfTopics: Int!): ScheduleEventMutationResponse
     createComfirmSvTopicGv(scheduleEvent: ID!, comfirmInput: [ComfirmInput!]!): ComfirmSvTopicGvMutationResponse
 
     # Modify API

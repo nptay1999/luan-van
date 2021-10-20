@@ -3,7 +3,23 @@ const TopicsOfEvent = require("../models/topicsOfEvent");
 
 module.exports = {
   getScheduleEventById: async (_id) => await ScheduleEvent.findById(_id),
-  getAllScheduleEvents: async () => await ScheduleEvent.find(),
+  getAllScheduleEvents: async () => {
+    try {
+      const events = await ScheduleEvent.find()
+      return {
+        code: 200,
+        success: true,
+        message: "Query event successfully.",
+        scheduleEvents: events
+      }
+    } catch (error) {
+      return {
+        code: 500,
+        success: false,
+        message: "Something wrong when working with database!"
+      }
+    }
+  },
   queryScheduleEventById: async (_id) => {
     try {
       const event = await ScheduleEvent.findById(_id)
@@ -39,13 +55,13 @@ module.exports = {
         active: false,
         message: "There isn't event running!",
       }
-
+      const event = activeEvent[activeEvent.length - 1]
       return {
         code: 200,
         success: true,
         active: true,
         message: "Query event successfully!",
-        scheduleEvent: activeEvent
+        scheduleEvent: event
       }
     } catch (error) {
       return {
@@ -67,7 +83,7 @@ module.exports = {
 
       // xác nhận có sự kiện đang diễn ra hay không. b7 -> b11
       const scheduleEvents = await ScheduleEvent.find();
-      if (scheduleEvents) {
+      if (scheduleEvents.length >= 1) {
         const eventIsRunning = scheduleEvents.filter((event) => {
           const oldTimeEnd = new Date(event.timeEnd).getTime(); // timeEnd: { type: time.toISOString() }
           const { hotStop } = event;

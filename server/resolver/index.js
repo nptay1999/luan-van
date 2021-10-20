@@ -2,8 +2,8 @@ module.exports = {
   // QUERY
   Query: {
     hello: () => "Hello World",
-    userByTypeUser: async (parent, args, { dataMethods }) =>
-      await dataMethods.getUserByTypeUser(args),
+    userByTypeUser: async (parent, { userType }, { dataMethods }) =>
+      await dataMethods.getUserByTypeUser(userType),
     userInfoes: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllUserInfo(),
     topics: async (parent, args, { dataMethods }) =>
@@ -11,7 +11,7 @@ module.exports = {
     checkScheduleEvent: async (parent, args, { dataMethods }) =>
       await dataMethods.checkScheduleEvent(),
     getChartRegisterTopics: async (parent, { ScheduleEvent }, { dataMethods }) => 
-      await dataMethods.getTopicsOfEventByEventId(ScheduleEvent),
+      await dataMethods.getTopicsOfEventByEventIdQueryResponse(ScheduleEvent),
     scheduleEvents: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllScheduleEvents(),
     scheduleEvent: async (parent, { ScheduleEvent }, { dataMethods }) =>
@@ -54,6 +54,8 @@ module.exports = {
   },
 
   ComfirmSvTopicGv: {
+    topic: async ({ topic }, args, { dataMethods }) => 
+    await dataMethods.getTopicById(topic),
     sinhvien: async ({ sinhvien }, args, { dataMethods }) =>
       await dataMethods.getUserInfoById(sinhvien),
     gianvien: async ({ gianvien }, args, { dataMethods }) =>

@@ -13,9 +13,9 @@ module.exports = {
       };
     else return null;
   },
-  getUserByTypeUser: async ({ userType }) => {
+  getUserByTypeUser: async (userType) => {
     try {
-      const users = User.find({ userType: userType});
+      const users = await User.find({ userType: userType});
       return {
         code: 200,
         success: true,

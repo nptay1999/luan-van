@@ -2,7 +2,7 @@ const ComfirmSvTopicGv = require('../models/comfirmSvTopicGv');
 
 module.exports = {
   getComfirmSvTopicGvByEventId: async eventId => {
-    return await ComfirmSvTopicGv.find({ event: eventId})
+    return await ComfirmSvTopicGv.find({ event: eventId })
   },
   createComfirmSvTopicGv: async args => {
     const { scheduleEvent, comfirmInput } = args;
@@ -14,11 +14,11 @@ module.exports = {
         })
         await newComfirm.save()
       }
-      
-      const cfs = ComfirmSvTopicGv.find({ event: scheduleEvent });
+      const cfs = await ComfirmSvTopicGv.find({ event: scheduleEvent });
       return {
         code: 201,
         success: true,
+        message: 'Save successfully',
         comfirmSvTopicGv: cfs
       }
     } catch (error) {
