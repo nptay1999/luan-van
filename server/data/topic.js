@@ -4,6 +4,7 @@ const Topic = require("../models/Topic");
 module.exports = {
   getAllTopics: async () => await Topic.find(),
   getTopics: async ({ creator }) => await Topic.find({ creator: creator }),
+  getTopicById: async _id => await Topic.findById(_id),
   createTopic: async (args) => {
     const { creator } = args;
     try {

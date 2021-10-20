@@ -13,6 +13,23 @@ module.exports = {
       };
     else return null;
   },
+  getUserByTypeUser: async ({ userType }) => {
+    try {
+      const users = User.find({ userType: userType});
+      return {
+        code: 200,
+        success: true,
+        message: 'Query users successfully.',
+        users: users
+      }
+    } catch (error) {
+      return {
+        code: 500,
+        success: false,
+        message: 'Somethings wrong when query database!'
+      }
+    }
+  },
   createUser: async (args) => {
     const { username, password, info } = args;
 
