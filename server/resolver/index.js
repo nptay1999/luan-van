@@ -2,20 +2,28 @@ module.exports = {
   // QUERY
   Query: {
     hello: () => "Hello World",
+    login: async (parent, args, { dataMethods }) =>
+      await dataMethods.login(args),
     userByTypeUser: async (parent, { userType }, { dataMethods }) =>
       await dataMethods.getUserByTypeUser(userType),
     userInfoes: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllUserInfo(),
+    userInfoById: async (parent, { id }, { dataMethods }) =>
+      await dataMethods.getUserInfoById(id),
     topics: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllTopics(),
     checkScheduleEvent: async (parent, args, { dataMethods }) =>
       await dataMethods.checkScheduleEvent(),
-    getChartRegisterTopics: async (parent, { ScheduleEvent }, { dataMethods }) => 
+    getChartRegisterTopics: async (
+      parent,
+      { ScheduleEvent },
+      { dataMethods }
+    ) =>
       await dataMethods.getTopicsOfEventByEventIdQueryResponse(ScheduleEvent),
     scheduleEvents: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllScheduleEvents(),
     scheduleEvent: async (parent, { ScheduleEvent }, { dataMethods }) =>
-    await dataMethods.queryScheduleEventById(ScheduleEvent),
+      await dataMethods.queryScheduleEventById(ScheduleEvent),
   },
 
   UserInfo: {
@@ -37,31 +45,31 @@ module.exports = {
   },
 
   ScheduleEvent: {
-    topics: async ({ _id }, args, { dataMethods }) => 
+    topics: async ({ _id }, args, { dataMethods }) =>
       await dataMethods.getTopicsOfEventByEventId(_id),
-    comfirm: async ({ _id }, args, { dataMethods }) => 
+    comfirm: async ({ _id }, args, { dataMethods }) =>
       await dataMethods.getComfirmSvTopicGvByEventId(_id),
   },
 
   TopicsOfEvent: {
-    topic: async ({ topic }, args, { dataMethods }) => 
+    topic: async ({ topic }, args, { dataMethods }) =>
       await dataMethods.getTopicById(topic),
     sinhvien: async ({ sinhvien }, args, { dataMethods }) => {
-      return sinhvien.map(async sv => await dataMethods.getUserInfoById(sv))
+      return sinhvien.map(async (sv) => await dataMethods.getUserInfoById(sv))
     },
-    event: async ({ event }, args, { dataMethods }) => 
+    event: async ({ event }, args, { dataMethods }) =>
       await dataMethods.getScheduleEventById(event),
   },
 
   ComfirmSvTopicGv: {
-    topic: async ({ topic }, args, { dataMethods }) => 
-    await dataMethods.getTopicById(topic),
+    topic: async ({ topic }, args, { dataMethods }) =>
+      await dataMethods.getTopicById(topic),
     sinhvien: async ({ sinhvien }, args, { dataMethods }) =>
       await dataMethods.getUserInfoById(sinhvien),
     gianvien: async ({ gianvien }, args, { dataMethods }) =>
       await dataMethods.getUserInfoById(gianvien),
     event: async ({ event }, args, { dataMethods }) =>
-      await dataMethods.getScheduleEventById(event)
+      await dataMethods.getScheduleEventById(event),
   },
 
   // MUTATION
@@ -75,7 +83,7 @@ module.exports = {
     createScheduleEvent: async (parent, args, { dataMethods }) =>
       await dataMethods.createScheduleEvent(args),
     createComfirmSvTopicGv: async (parent, args, { dataMethods }) =>
-    await dataMethods.createComfirmSvTopicGv(args),
+      await dataMethods.createComfirmSvTopicGv(args),
 
     updateTopic: async (parent, args, { dataMethods }) =>
       await dataMethods.updateTopic(args),
@@ -85,4 +93,4 @@ module.exports = {
     deleteTopic: async (parent, args, { dataMethods }) =>
       await dataMethods.deleteTopic(args),
   },
-};
+}

@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-core");
+const { gql } = require("apollo-server-core")
 
 module.exports = gql`
   type User {
@@ -7,8 +7,8 @@ module.exports = gql`
     password: String
     userType: Int
     info: UserInfo
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   type UserInfo {
@@ -20,8 +20,8 @@ module.exports = gql`
     identification: String
     account: User
     topics: [Topic]
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   type Topic {
@@ -32,20 +32,21 @@ module.exports = gql`
     duyet: Int
     topicType: [String]
     creator: UserInfo
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   type ScheduleEvent {
     _id: ID!
+    title: String
     timeStart: String
     timeEnd: String
     hotStop: Boolean
     numberOfTopics: Int
     topics: [TopicsOfEvent]
     comfirm: [ComfirmSvTopicGv]
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   type TopicsOfEvent {
@@ -53,8 +54,8 @@ module.exports = gql`
     topic: Topic
     sinhvien: [UserInfo]
     event: ScheduleEvent
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   type ComfirmSvTopicGv {
@@ -63,8 +64,8 @@ module.exports = gql`
     sinhvien: UserInfo
     gianvien: UserInfo
     event: ScheduleEvent
-    createAt: String
-    updateAt: String
+    createdAt: String
+    updatedAt: String
   }
 
   # Response type
@@ -126,7 +127,7 @@ module.exports = gql`
   }
 
   type UserQueryResponse {
-    code: Int!,
+    code: Int!
     success: Boolean!
     message: String
     users: [User]
@@ -140,35 +141,82 @@ module.exports = gql`
   }
 
   type ComfirmSvTopicGvMutationResponse {
-    code: Int!,
-    success: Boolean!,
-    message: String,
+    code: Int!
+    success: Boolean!
+    message: String
     comfirmSvTopicGv: [ComfirmSvTopicGv]
+  }
+
+  type AuthResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    user: User
+    token: String
+    tokenExpiration: Int
   }
 
   # ROOT API
   type Query {
     hello: String
+    login(username: String!, password: String!): AuthResponse
     userByTypeUser(userType: Int!): UserQueryResponse
     userInfoes: [UserInfo]
+    userInfoById(id: ID!): UserInfo
     topics: [Topic]
     checkScheduleEvent: ScheduleEventQueryResponse
     getChartRegisterTopics(ScheduleEvent: ID!): TopicsOfEventQueryResponse
     scheduleEvents: AllScheduleEventQueryResponse
     scheduleEvent(ScheduleEvent: ID!): ScheduleEventQueryResponse
   }
-  
+
   type Mutation {
     # Create API
-    createUserInfo(name: String!, avatar: String, email: String!, phone: String!, identification: String): UserInfoMutationResponse
-    createUser(username: String!, password: String!, userType: Int!, info: ID!): UserMutationResponse
-    createTopic(title: String!, content: String!, topicType: [String], creator: ID!): TopicMutationResponse
-    createScheduleEvent(timeStart: String!, timeEnd: String!, topics: [String!]!, numberOfTopics: Int!): ScheduleEventMutationResponse
-    createComfirmSvTopicGv(scheduleEvent: ID!, comfirmInput: [ComfirmInput!]!): ComfirmSvTopicGvMutationResponse
+    createUserInfo(
+      name: String!
+      avatar: String
+      email: String!
+      phone: String!
+      identification: String
+    ): UserInfoMutationResponse
+    createUser(
+      username: String!
+      password: String!
+      userType: Int!
+      info: ID!
+    ): UserMutationResponse
+    createTopic(
+      title: String!
+      content: String!
+      topicType: [String]
+      creator: ID!
+    ): TopicMutationResponse
+    createScheduleEvent(
+      title: String!
+      timeStart: String!
+      timeEnd: String!
+      topics: [String!]!
+      numberOfTopics: Int!
+    ): ScheduleEventMutationResponse
+    createComfirmSvTopicGv(
+      scheduleEvent: ID!
+      comfirmInput: [ComfirmInput!]!
+    ): ComfirmSvTopicGvMutationResponse
 
     # Modify API
-    updateTopic(_id: ID!, title: String, content: String, topicType: [String], enable: Boolean, duyet: Int): TopicMutationResponse
-    registerTopics(scheduleEvent: ID!, sinhvien: ID!, topics: [ID]!): ScheduleEventMutationResponse
+    updateTopic(
+      _id: ID!
+      title: String
+      content: String
+      topicType: [String]
+      enable: Boolean
+      duyet: Int
+    ): TopicMutationResponse
+    registerTopics(
+      scheduleEvent: ID!
+      sinhvien: ID!
+      topics: [ID]!
+    ): ScheduleEventMutationResponse
 
     # Delete API
     deleteTopic(_id: ID!): TopicMutationResponse
