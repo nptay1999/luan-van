@@ -42,6 +42,12 @@ code {
 .h-fullscreen {
   height: 100vh;
 }
+
+// Utilies
+.border-light {
+  border: 1px solid $gray-light !important;
+}
+
 // Account page style
 .account-page {
   & .username {
@@ -52,4 +58,71 @@ code {
 .input-textarea {
   min-height: 200px !important;
   overflow: hidden;
+}
+
+// Topic page style
+.table-grid-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr 2fr 3fr 2fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "checkbox title duyet enable creator lastupdate menua";
+  padding: 10px 0;
+  border-bottom: 1px solid $gray-light;
+  &.title {
+    background-color: #f9fbfd;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-xm;
+    color: #95aac9;
+  }
+  &.item {
+    font-size: $font-size-sm;
+  }
+  & .table-grid-item-checkbox {
+    grid-area: checkbox;
+    display: flex;
+    justify-content: center;
+    font-size: $font-size-sm;
+  }
+  & .table-grid-item-title {
+    grid-area: title;
+  }
+  & .table-grid-item-duyet {
+    grid-area: duyet;
+  }
+  & .table-grid-item-enable {
+    grid-area: enable;
+  }
+  & .table-grid-item-creator {
+    grid-area: creator;
+  }
+  & .table-grid-item-lastupdate {
+    grid-area: lastupdate;
+  }
+  & .table-grid-item-menu {
+    grid-area: menua;
+    & .dropdown-item {
+      font-size: $font-size-sm;
+    }
+  }
+}
+.topics-page {
+  & .nav-link {
+    color: black;
+    padding-bottom: 1rem;
+    &.active {
+      color: $blue;
+      border-bottom: 2px solid $blue;
+    }
+  }
+}
+
+// popup style
+.popup {
+  background-color: rgb(236, 227, 227);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 300px;
+  position: Fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
