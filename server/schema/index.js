@@ -164,6 +164,7 @@ module.exports = gql`
     userInfoes: [UserInfo]
     userInfoById(id: ID!): UserInfo
     topics: [Topic]
+    topic(id: ID!): TopicMutationResponse
     checkScheduleEvent: ScheduleEventQueryResponse
     getChartRegisterTopics(ScheduleEvent: ID!): TopicsOfEventQueryResponse
     scheduleEvents: AllScheduleEventQueryResponse

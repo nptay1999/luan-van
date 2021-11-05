@@ -12,6 +12,17 @@ module.exports = {
       await dataMethods.getUserInfoById(id),
     topics: async (parent, args, { dataMethods }) =>
       await dataMethods.getAllTopics(),
+    topic: async (parent, { id }, { isAuth, dataMethods }) => {
+      if (!isAuth) {
+        return { code: 401, success: false, message: "Unauthorized!" }
+      }
+      return {
+        code: 200,
+        success: true,
+        message: "Query successfully.",
+        topic: await dataMethods.getTopicById(id),
+      }
+    },
     checkScheduleEvent: async (parent, args, { dataMethods }) =>
       await dataMethods.checkScheduleEvent(),
     getChartRegisterTopics: async (
@@ -78,19 +89,48 @@ module.exports = {
       await dataMethods.createUserInfo(args),
     createUser: async (parent, args, { dataMethods }) =>
       await dataMethods.createUser(args),
-    createTopic: async (parent, args, { dataMethods }) =>
-      await dataMethods.createTopic(args),
+    createTopic: async (parent, args, { isAuth, user, dataMethods }) => {
+      if (!isAuth) {
+        return { code: 401, success: false, message: "Unauthorized!" }
+      }
+      if (user.userType > 2) {
+        return { code: 423, success: false, message: "Don't have role!" }
+      }
+      return await dataMethods.createTopic(args)
+    },
     createScheduleEvent: async (parent, args, { dataMethods }) =>
       await dataMethods.createScheduleEvent(args),
     createComfirmSvTopicGv: async (parent, args, { dataMethods }) =>
       await dataMethods.createComfirmSvTopicGv(args),
 
-    updateTopic: async (parent, args, { dataMethods }) =>
-      await dataMethods.updateTopic(args),
+    updateTopic: async (parent, args, { isAuth, user, dataMethods }) => {
+      const { _id } = args
+      const topic = await dataMethods.getTopicById(_id)
+      if (!isAuth) {
+        return { code: 401, success: false, message: "Unauthorized!" }
+      }
+      if (topic === undefined)
+        return { code: 401, success: false, message: "Query failed!!" }
+      if (topic.creator !== user.info) {
+        if (user.userType > 1)
+          return { code: 423, success: false, message: "Don't have role!" }
+      }
+      return await dataMethods.updateTopic(args)
+    },
     registerTopics: async (parent, args, { dataMethods }) =>
       await dataMethods.registerTopics(args),
 
-    deleteTopic: async (parent, args, { dataMethods }) =>
-      await dataMethods.deleteTopic(args),
+    deleteTopic: async (parent, args, { isAuth, user, dataMethods }) => {
+      const { _id } = args
+      const topic = await dataMethods.getTopicById(_id)
+      if (!isAuth) {
+        return { code: 401, success: false, message: "Unauthorized!" }
+      }
+      if (topic.creator !== user.info) {
+        if (user.userType > 1)
+          return { code: 423, success: false, message: "Don't have role!" }
+      }
+      return await dataMethods.deleteTopic(args)
+    },
   },
 }
