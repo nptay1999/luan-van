@@ -12,6 +12,7 @@ import { GET_A_TOPIC, UPDATE_CONTENT_TOPIC } from "../graphql/topicGQL"
 import { useAppSelector } from "../redux/hooks"
 import { TopicType } from "../redux/models"
 import { authSelector } from "../redux/reducer/authReducer"
+import ReactMarkdown from "react-markdown"
 
 interface ParamsType {
   id: string
@@ -125,13 +126,25 @@ const EditTopicPage = () => {
                     good!
                   </div>
                 </label>
-                <textarea
-                  id="content"
-                  className="input-textarea form-control input-normal-color-custom"
-                  value={content}
-                  onChange={inputTextareaHandler}
-                  ref={textareaRef}
-                ></textarea>
+                <div className="row g-1">
+                  <div className="col-6">
+                    <textarea
+                      id="content"
+                      className="input-textarea form-control input-normal-color-custom"
+                      value={content}
+                      onChange={inputTextareaHandler}
+                      ref={textareaRef}
+                    ></textarea>
+                  </div>
+                  <div className="col-6">
+                    <div
+                      className="border rounded"
+                      style={{ minHeight: "200px" }}
+                    >
+                      <ReactMarkdown children={content} />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="form-group d-flex mb-4">

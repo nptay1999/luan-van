@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client"
 import React, { ChangeEvent, RefObject, useState, FormEvent } from "react"
+import ReactMarkdown from "react-markdown"
 import { Redirect } from "react-router-dom"
 import LoadingComponent from "../components/LoadingComponent"
 import { CREATE_TOPIC } from "../graphql/topicGQL"
@@ -113,13 +114,25 @@ const SuggestTopic = () => {
                     good!
                   </div>
                 </label>
-                <textarea
-                  id="content"
-                  className="input-textarea form-control input-normal-color-custom"
-                  value={content}
-                  onChange={inputTextareaHandler}
-                  ref={textareaRef}
-                ></textarea>
+                <div className="row g-1">
+                  <div className="col-6">
+                    <textarea
+                      id="content"
+                      className="input-textarea form-control input-normal-color-custom"
+                      value={content}
+                      onChange={inputTextareaHandler}
+                      ref={textareaRef}
+                    ></textarea>
+                  </div>
+                  <div className="col-6 ">
+                    <div
+                      className="border rounded"
+                      style={{ minHeight: "200px" }}
+                    >
+                      <ReactMarkdown children={content} />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="form-group d-flex mb-4">

@@ -1,16 +1,19 @@
 import { useQuery } from "@apollo/client"
-import React, { useState } from "react"
+import React, { useState, useContext, ChangeEvent } from "react"
 import { GET_TOPICS } from "../graphql/topicGQL"
 import { TopicInterface } from "../redux/models"
 import LoadingComponent from "./LoadingComponent"
 import TopicItemComponent from "./TopicItemComponent"
 import refetchIcon from "../assets/refetch.svg"
 import DeletePopupComponent from "./DeletePopupComponent"
+import { OptionsTopicContext } from "../context/OptionsTopicContext"
+import OptionsTopicComponent from "./OptionsTopicComponent"
 
 const AllTopicsComponent = () => {
   const { loading, data, refetch } = useQuery(GET_TOPICS)
   const [isPopupShow, setIsPopupShow] = useState<boolean>(false)
   const [idTopicDelete, setIdTopicDelete] = useState<string>("")
+  const { topics, addMany, removeAll } = useContext(OptionsTopicContext)
 
   const togglePopup = (value: boolean, id: string) => {
     setIsPopupShow(value)
@@ -24,6 +27,16 @@ const AllTopicsComponent = () => {
     }
   }
 
+  const toggleSelectTopic = () => {
+    return (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        addMany(data.topics)
+      } else {
+        removeAll()
+      }
+    }
+  }
+
   if (loading) return <LoadingComponent />
 
   return (
@@ -34,11 +47,16 @@ const AllTopicsComponent = () => {
           topicId={idTopicDelete}
         />
       )}
+      {topics.length > 0 && <OptionsTopicComponent refetchData={refetch} />}
       <div className="w-100 rounded border-light pb-5">
         {/* header */}
         <div className="table-grid-wrapper title">
           <div className="table-grid-item-checkbox">
-            <input type="checkbox" className="form-check-input" />
+            <input
+              type="checkbox"
+              className="form-check-input"
+              onChange={toggleSelectTopic()}
+            />
           </div>
           <div className="table-grid-item-title">TITLE</div>
           <div className="table-grid-item-duyet">DUYET</div>

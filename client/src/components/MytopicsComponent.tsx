@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext, ChangeEvent } from "react"
 import { useQuery } from "@apollo/client"
 import { GET_TOPICS } from "../graphql/topicGQL"
 import { useAppSelector } from "../redux/hooks"
@@ -8,12 +8,15 @@ import LoadingComponent from "./LoadingComponent"
 import TopicItemComponent from "./TopicItemComponent"
 import refetchIcon from "../assets/refetch.svg"
 import DeletePopupComponent from "./DeletePopupComponent"
+import { OptionsTopicContext } from "../context/OptionsTopicContext"
+import OptionsTopicComponent from "./OptionsTopicComponent"
 
 const MyTopicsComponent = () => {
   const { loading, data, refetch } = useQuery(GET_TOPICS)
   const { user } = useAppSelector(authSelector)
   const [isPopupShow, setIsPopupShow] = useState<boolean>(false)
   const [idTopicDelete, setIdTopicDelete] = useState<string>("")
+  const { topics, addMany, removeAll } = useContext(OptionsTopicContext)
 
   const togglePopup = (value: boolean, id: string) => {
     setIsPopupShow(value)
@@ -24,6 +27,16 @@ const MyTopicsComponent = () => {
     setIsPopupShow(false)
     if (action) {
       refetch()
+    }
+  }
+
+  const toggleSelectTopic = () => {
+    return (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        addMany(myTopicLists)
+      } else {
+        removeAll()
+      }
     }
   }
 
@@ -43,11 +56,16 @@ const MyTopicsComponent = () => {
           topicId={idTopicDelete}
         />
       )}
+      {topics.length > 0 && <OptionsTopicComponent refetchData={refetch} />}
       <div className="w-100 rounded border-light pb-5">
         {/* header */}
         <div className="table-grid-wrapper title">
           <div className="table-grid-item-checkbox">
-            <input type="checkbox" className="form-check-input" />
+            <input
+              type="checkbox"
+              className="form-check-input"
+              onChange={toggleSelectTopic()}
+            />
           </div>
           <div className="table-grid-item-title">TITLE</div>
           <div className="table-grid-item-duyet">DUYET</div>

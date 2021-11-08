@@ -126,3 +126,16 @@ code {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+// Option Topic style
+.options-topic {
+  min-width: 350px;
+  background-color: #f3f3f3;
+  border: 1px solid #bac0fb;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  color: black;
+  position: Fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}

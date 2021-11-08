@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useContext, ChangeEvent } from "react"
 import { useHistory } from "react-router-dom"
 import dropdownMenu from "../assets/dropdown-menu.svg"
+import { OptionsTopicContext } from "../context/OptionsTopicContext"
 import { Duyet, TopicInterface } from "../redux/models"
 
 interface PropTypes {
@@ -12,6 +13,7 @@ const defaultAvatar =
   "https://dashkit-react.vercel.app/img/avatars/profiles/avatar-1.jpg"
 
 const TopicItemComponent = ({ topic, onClickToDelete }: PropTypes) => {
+  const { topics, addTopicId, removeTopicId } = useContext(OptionsTopicContext)
   const history = useHistory()
   const updateDate = new Date(topic.updatedAt ? +topic.updatedAt : Date.now())
 
@@ -23,12 +25,44 @@ const TopicItemComponent = ({ topic, onClickToDelete }: PropTypes) => {
     history.push(`/edit-topic/${topic._id}`)
   }
 
+  const doViewDetailTopic = () => {
+    history.push(`/detail-topic/${topic._id}`)
+  }
+
+  const isChecked = (topic: TopicInterface) => {
+    const t = topics.filter(
+      (tc) => tc._id?.localeCompare(topic._id || "") === 0
+    )
+    if (t.length > 0) return true
+    return false
+  }
+
+  const toggleSelectTopic = (topic: TopicInterface) => {
+    return (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        addTopicId(topic)
+      } else {
+        removeTopicId(topic)
+      }
+    }
+  }
   return (
     <div className="table-grid-wrapper item">
       <div className="table-grid-item-checkbox">
-        <input type="checkbox" className="form-check-input" />
+        <input
+          type="checkbox"
+          checked={isChecked(topic)}
+          onChange={toggleSelectTopic(topic)}
+          className="form-check-input"
+        />
       </div>
-      <div className="table-grid-item-title">{topic.title}</div>
+      <div
+        className="table-grid-item-title"
+        onClick={doViewDetailTopic}
+        style={{ cursor: "pointer" }}
+      >
+        {topic.title}
+      </div>
       <div className="table-grid-item-duyet">
         {Duyet[topic.duyet ? topic.duyet : 0]}
       </div>

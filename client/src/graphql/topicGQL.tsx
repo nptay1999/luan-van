@@ -44,6 +44,7 @@ export const GET_A_TOPIC = gql`
         creator {
           _id
           name
+          email
         }
       }
     }
@@ -110,6 +111,16 @@ export const UPDATE_CONTENT_TOPIC = gql`
       topic {
         _id
       }
+    }
+  }
+`
+
+export const UPDATE_STATE_TOPIC = gql`
+  mutation UpdateTopicMutation($topicId: ID!, $enable: Boolean, $duyet: Int) {
+    updateTopic(_id: $topicId, enable: $enable, duyet: $duyet) {
+      code
+      success
+      message
     }
   }
 `

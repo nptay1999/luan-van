@@ -1,5 +1,6 @@
 import React, { Fragment } from "react"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import TopicDetailPage from "./pages/TopicDetailPage"
 import HandleLoginComponent from "./controllers/HandleLoginComponent"
 import AccountPage from "./pages/AccountPage"
 import EditTopicPage from "./pages/EditTopicPage"
@@ -19,6 +20,9 @@ function App() {
         <Route path="/topics" component={TopicsPage} />
         <Route path="/edit-topic/:id">
           <EditTopicPage />
+        </Route>
+        <Route path="/detail-topic/:id">
+          <TopicDetailPage />
         </Route>
         {/* Controllers Route */}
         <Route path="/login-handle" component={HandleLoginComponent} />
