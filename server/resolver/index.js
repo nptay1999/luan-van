@@ -98,8 +98,17 @@ module.exports = {
       }
       return await dataMethods.createTopic(args)
     },
-    createScheduleEvent: async (parent, args, { dataMethods }) =>
-      await dataMethods.createScheduleEvent(args),
+    createScheduleEvent: async (
+      parent,
+      args,
+      { isAuth, user, dataMethods }
+    ) => {
+      if (!isAuth)
+        return { code: 401, success: false, message: "Unauthorized!" }
+      if (user.userType > 1)
+        return { code: 423, success: false, message: "Don't have role!" }
+      return await dataMethods.createScheduleEvent(args)
+    },
     createComfirmSvTopicGv: async (parent, args, { dataMethods }) =>
       await dataMethods.createComfirmSvTopicGv(args),
 

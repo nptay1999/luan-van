@@ -196,7 +196,7 @@ module.exports = gql`
       title: String!
       timeStart: String!
       timeEnd: String!
-      topics: [String!]!
+      topics: [ID!]!
       numberOfTopics: Int!
     ): ScheduleEventMutationResponse
     createComfirmSvTopicGv(

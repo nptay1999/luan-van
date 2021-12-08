@@ -7,6 +7,7 @@ import EditTopicPage from "./pages/EditTopicPage"
 import LoginPage from "./pages/LoginPage"
 import SuggestTopicPage from "./pages/SuggestTopicPage"
 import TopicsPage from "./pages/TopicsPage"
+import CreateEventPage from "./pages/CreateEventPage"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/account" component={AccountPage} />
+        <Route path="/create-event" component={CreateEventPage} />
         <Route path="/suggest-topic" component={SuggestTopicPage} />
         <Route path="/topics" component={TopicsPage} />
         <Route path="/edit-topic/:id">
@@ -52,6 +54,11 @@ const HomePage = () => {
       <br />
       <Link to="/topics">
         <button className="btn btn-primary">Topics</button>
+      </Link>
+      <br />
+      <br />
+      <Link to="/create-event">
+        <button className="btn btn-primary">Tạo sự kiện đăng ký đề tài</button>
       </Link>
     </Fragment>
   )
